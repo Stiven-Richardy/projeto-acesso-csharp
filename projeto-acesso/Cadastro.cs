@@ -34,7 +34,13 @@ namespace projeto_acesso
 
         public bool RemoverUsuario(Usuario usuario)
         {
-            return false;
+            bool usuarioRemovido = false;
+            if (PesquisarUsuario(usuario) != null)
+            {
+                Usuarios.Remove(usuario);
+                usuarioRemovido = true;
+            }
+            return usuarioRemovido;
         }
 
         public Usuario PesquisarUsuario(Usuario usuario)

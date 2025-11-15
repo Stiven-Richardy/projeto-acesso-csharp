@@ -57,7 +57,7 @@ namespace projeto_acesso
                     " 10 - Consultar logs de acesso");
                 Console.WriteLine(new string('-', 70));
                 Console.Write(" Escolha uma opção: ");
-                seletor = Utils.lerInt(Console.ReadLine(), 0, " Entrada inválida!\n  Digite outro número: ");
+                seletor = Utils.lerInt(Console.ReadLine(), 0, " Entrada inválida!\n Digite outro número: ");
 
                 switch (seletor)
                 {
@@ -80,7 +80,7 @@ namespace projeto_acesso
                         ConsultarUsuario();
                         break;
                     case 6:
-                        // ExcluirUsuario();
+                        ExcluirUsuario();
                         break;
                     case 7:
                         // ConcederPermissao();
@@ -191,6 +191,23 @@ namespace projeto_acesso
             else
             {
                 Utils.MensagemErro("O usuário não existe.");
+            }
+        }
+        static void ExcluirUsuario()
+        {
+            Utils.Titulo("EXCLUIR USUÁRIO");
+            Console.Write(" Digite o Nome do Usuário: ");
+            string usuario = Console.ReadLine();
+            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(usuario));
+            if (cadastro.RemoverUsuario(usuarioPesquisado))
+            {
+                Console.WriteLine($" Id: {usuarioPesquisado.Id}\n" +
+                    $" Nome: {usuarioPesquisado.Nome}");
+                Utils.MensagemSucesso("Usuário excluído!");
+            }
+            else
+            {
+                Utils.MensagemErro("O usuario não existe.");
             }
         }
     }
