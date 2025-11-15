@@ -34,6 +34,7 @@ namespace projeto_acesso
     internal class Program
     {
         public static Cadastro cadastro = new Cadastro();
+        public static int idAmbiente = 0;
 
         static void Main(string[] args)
         {
@@ -63,7 +64,7 @@ namespace projeto_acesso
                         Console.WriteLine(" Programa finalizado!");
                         break;
                     case 1:
-                        // CadastrarAmbiente();
+                        CadastrarAmbiente();
                         break;
                     case 2:
                         // ConsultarAmbiente();
@@ -96,6 +97,27 @@ namespace projeto_acesso
                         Utils.MensagemErro("Digite um número de 0 - 10!");
                         break;
                 }
+            }
+        }
+
+        static void CadastrarAmbiente()
+        {
+            Utils.Titulo("CADASTRAR AMBIENTE");
+            Console.Write(" Digite o Nome do Ambiente: ");
+            string ambiente = Console.ReadLine();
+            Ambiente novoAmbiente = new Ambiente(idAmbiente, ambiente);
+
+            if(cadastro.PesquisarAmbiente(novoAmbiente) == null)
+            {
+                cadastro.AdicionarAmbiente(novoAmbiente);
+                Console.WriteLine($" Id: {novoAmbiente.Id}\n" +
+                    $" Nome: {novoAmbiente.Nome}");
+                Utils.MensagemSucesso("Ambiente cadastrado!");
+                idAmbiente++;
+            }
+            else
+            {
+                Utils.MensagemErro("O ambiente já existe.");
             }
         }
     }
