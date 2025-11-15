@@ -22,7 +22,10 @@ namespace projeto_acesso
         public string Nome { get => nome; set => nome = value; }
         public List<Ambiente> Ambientes { get => ambientes; set => ambientes = value; }
 
-        public Usuario() { }
+        public Usuario(string nome) 
+        {
+            Nome = nome;
+        }
 
         public Usuario(int id, string nome)
         {

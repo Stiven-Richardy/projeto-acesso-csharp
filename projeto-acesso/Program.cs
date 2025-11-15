@@ -35,6 +35,7 @@ namespace projeto_acesso
     {
         public static Cadastro cadastro = new Cadastro();
         public static int idAmbiente = 0;
+        public static int idUsuario = 0;
 
         static void Main(string[] args)
         {
@@ -73,7 +74,7 @@ namespace projeto_acesso
                         ExcluirAmbiente();
                         break;
                     case 4:
-                        // Cadastrarusuario();
+                        CadastrarUsuario();
                         break;
                     case 5:
                         // ConsultarUsuario();
@@ -106,7 +107,6 @@ namespace projeto_acesso
             Console.Write(" Digite o Nome do Ambiente: ");
             string ambiente = Console.ReadLine();
             Ambiente novoAmbiente = new Ambiente(idAmbiente, ambiente);
-
             if(cadastro.PesquisarAmbiente(novoAmbiente) == null)
             {
                 cadastro.AdicionarAmbiente(novoAmbiente);
@@ -154,6 +154,26 @@ namespace projeto_acesso
             else
             {
                 Utils.MensagemErro("O ambiente não existe.");
+            }
+        }
+
+        static void CadastrarUsuario()
+        {
+            Utils.Titulo("CADASTRAR AMBIENTE");
+            Console.Write(" Digite o Nome do Ambiente: ");
+            string usuario = Console.ReadLine();
+            Usuario novoUsuario = new Usuario(idUsuario, usuario);
+            if (cadastro.PesquisarUsuario(novoUsuario) == null)
+            {
+                cadastro.AdicionarUsuario(novoUsuario);
+                Console.WriteLine($" Id: {novoUsuario.Id}\n" +
+                    $" Nome: {novoUsuario.Nome}");
+                Utils.MensagemSucesso("Usuário cadastrado!");
+                idUsuario++;
+            }
+            else
+            {
+                Utils.MensagemErro("O usuário já existe.");
             }
         }
     }
