@@ -67,7 +67,7 @@ namespace projeto_acesso
                         CadastrarAmbiente();
                         break;
                     case 2:
-                        // ConsultarAmbiente();
+                        ConsultarAmbiente();
                         break;
                     case 3:
                         // ExcluirAmbiente();
@@ -118,6 +118,25 @@ namespace projeto_acesso
             else
             {
                 Utils.MensagemErro("O ambiente já existe.");
+            }
+        }
+
+        static void ConsultarAmbiente()
+        {
+            Utils.Titulo("CONSULTAR AMBIENTE");
+            Console.Write(" Digite o Nome do Ambiente: ");
+            string ambiente = Console.ReadLine();
+            Ambiente ambientePesquisado = new Ambiente(ambiente);
+            ambientePesquisado = cadastro.PesquisarAmbiente(ambientePesquisado);
+            if (ambientePesquisado != null)
+            {
+                Console.WriteLine($" Id: {ambientePesquisado.Id}\n" +
+                    $" Nome: {ambientePesquisado.Nome}");
+                Utils.MensagemSucesso("Ambiente encontrado!");
+            }
+            else
+            {
+                Utils.MensagemErro("O ambiente não existe.");
             }
         }
     }

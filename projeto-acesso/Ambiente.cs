@@ -23,6 +23,11 @@ namespace projeto_acesso
         public string Nome { get => nome; set => nome = value; }
         public Queue<Log> Logs { get => logs; set => logs = value; }
 
+        public Ambiente(string nome)
+        {
+            Nome = nome;
+        }
+
         public Ambiente(int id, string nome)
         {
             Id = id;
