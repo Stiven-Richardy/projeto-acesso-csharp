@@ -77,7 +77,7 @@ namespace projeto_acesso
                         CadastrarUsuario();
                         break;
                     case 5:
-                        // ConsultarUsuario();
+                        ConsultarUsuario();
                         break;
                     case 6:
                         // ExcluirUsuario();
@@ -159,8 +159,8 @@ namespace projeto_acesso
 
         static void CadastrarUsuario()
         {
-            Utils.Titulo("CADASTRAR AMBIENTE");
-            Console.Write(" Digite o Nome do Ambiente: ");
+            Utils.Titulo("CADASTRAR USUÁRIO");
+            Console.Write(" Digite o Nome do Usuário: ");
             string usuario = Console.ReadLine();
             Usuario novoUsuario = new Usuario(idUsuario, usuario);
             if (cadastro.PesquisarUsuario(novoUsuario) == null)
@@ -174,6 +174,23 @@ namespace projeto_acesso
             else
             {
                 Utils.MensagemErro("O usuário já existe.");
+            }
+        }
+        static void ConsultarUsuario()
+        {
+            Utils.Titulo("CONSULTAR USUÁRIO");
+            Console.Write(" Digite o Nome do Usuário: ");
+            string usuario = Console.ReadLine();
+            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(usuario));
+            if (usuarioPesquisado != null)
+            {
+                Console.WriteLine($" Id: {usuarioPesquisado.Id}\n" +
+                    $" Nome: {usuarioPesquisado.Nome}");
+                Utils.MensagemSucesso("Usuário encontrado!");
+            }
+            else
+            {
+                Utils.MensagemErro("O usuário não existe.");
             }
         }
     }
