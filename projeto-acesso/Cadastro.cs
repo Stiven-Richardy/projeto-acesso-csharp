@@ -44,7 +44,7 @@ namespace projeto_acesso
 
         public void AdicionarAmbiente(Ambiente ambiente)
         {
-
+            Ambientes.Add(ambiente);
         }
 
         public bool RemoverAmbiente(Ambiente ambiente)
@@ -54,7 +54,8 @@ namespace projeto_acesso
 
         public Ambiente PesquisarAmbiente(Ambiente ambiente)
         {
-            return ambiente;
+            Ambiente ambientePesquisado = Ambientes.Find(a => a.Nome.Equals(ambiente.Nome, StringComparison.OrdinalIgnoreCase));
+            return ambientePesquisado;
         }
 
         public void Upload()
