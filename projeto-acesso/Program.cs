@@ -216,7 +216,7 @@ namespace projeto_acesso
             Console.Write(" Digite o Nome do Usuário: ");
             string nomeUsuario = Console.ReadLine();
             Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(nomeUsuario));
-            if (cadastro.RemoverUsuario(usuarioPesquisado))
+            if (usuarioPesquisado != null)
             {
                 Console.Write(" Digite o Ambiente: ");
                 string nomeAmbiente = Console.ReadLine();
