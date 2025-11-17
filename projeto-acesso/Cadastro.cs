@@ -49,7 +49,13 @@ namespace projeto_acesso
 
         public bool RemoverAmbiente(Ambiente ambiente)
         {
-            return false;
+            bool ambienteRemovido = false;
+            if(PesquisarAmbiente(ambiente) != null)
+            {
+                Ambientes.Remove(ambiente);
+                ambienteRemovido = true;
+            }
+            return ambienteRemovido;
         }
 
         public Ambiente PesquisarAmbiente(Ambiente ambiente)
