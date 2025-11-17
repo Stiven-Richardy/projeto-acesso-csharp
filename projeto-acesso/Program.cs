@@ -210,5 +210,28 @@ namespace projeto_acesso
                 Utils.MensagemErro("O usuario não existe.");
             }
         }
+        static void PermitirUsuario()
+        {
+            Utils.Titulo("PERMITIR USUÁRIO");
+            Console.Write(" Digite o Nome do Usuário: ");
+            string nomeUsuario = Console.ReadLine();
+            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(nomeUsuario));
+            if (cadastro.RemoverUsuario(usuarioPesquisado))
+            {
+                Console.Write(" Digite o Ambiente: ");
+                string nomeAmbiente = Console.ReadLine();
+                Ambiente ambientePesquisado = cadastro.PesquisarAmbiente(new Ambiente(nomeAmbiente));
+                if (usuarioPesquisado.ConcederPermissao(ambientePesquisado))
+                {
+                    Utils.MensagemSucesso($"Acesso concedido ao espaço {ambientePesquisado.Nome}");
+                }
+                else
+                    Utils.MensagemErro("Não foi possível conceder a permissão");
+            }
+            else
+            {
+                Utils.MensagemErro("O usuario não existe.");
+            }
+        }
     }
 }
