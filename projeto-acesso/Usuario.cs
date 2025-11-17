@@ -41,7 +41,25 @@ namespace projeto_acesso
 
         public bool RevogarPermissao(Ambiente ambiente)
         {
-            return false;
+            bool revogou = false;
+            bool contemAmbiente = Ambientes.Contains(ambiente);
+            if (ambiente != null)
+            {
+                if (contemAmbiente)
+                {
+                    Ambientes.Remove(ambiente);
+                    revogou = true;
+                }
+                else
+                {
+                    Console.WriteLine(" Ambiente não consta na lista do usuário ");
+                }
+            }
+            else 
+            {
+                Console.WriteLine("Ambiente não cadastrado");
+            }
+            return revogou;
         }
     }
 }
