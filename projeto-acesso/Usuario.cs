@@ -43,21 +43,15 @@ namespace projeto_acesso
         {
             bool revogou = false;
             bool contemAmbiente = Ambientes.Contains(ambiente);
-            if (ambiente != null)
-            {
-                if (contemAmbiente)
-                {
-                    Ambientes.Remove(ambiente);
-                    revogou = true;
-                }
-                else
-                {
-                    Console.WriteLine(" Ambiente não consta na lista do usuário ");
-                }
+            bool ehNulo = ambiente == null;
+            if (!ehNulo && contemAmbiente)
+            {  
+                Ambientes.Remove(ambiente);
+                revogou = true;
             }
             else 
             {
-                Console.WriteLine("Ambiente não cadastrado");
+                Console.WriteLine(ehNulo? "Ambiente não cadastrado" : "Ambiente não consta na lista do usuário");
             }
             return revogou;
         }
