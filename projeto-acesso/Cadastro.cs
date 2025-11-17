@@ -29,7 +29,7 @@ namespace projeto_acesso
 
         public void AdicionarUsuario(Usuario usuario)
         {
-
+            Usuarios.Add(usuario);
         }
 
         public bool RemoverUsuario(Usuario usuario)
@@ -37,9 +37,10 @@ namespace projeto_acesso
             return false;
         }
 
-        public Usuario PesquisarUsuario(Usuario usuarios)
+        public Usuario PesquisarUsuario(Usuario usuario)
         {
-            return usuarios;
+            Usuario usuarioPesquisado = Usuarios.Find(u => u.Nome.Equals(usuario.Nome, StringComparison.OrdinalIgnoreCase));
+            return usuarioPesquisado;
         }
 
         public void AdicionarAmbiente(Ambiente ambiente)
