@@ -86,7 +86,7 @@ namespace projeto_acesso
                         // ConcederPermissao();
                         break;
                     case 8:
-                        // RevogarPermissao();
+                        BloquearUsuario();
                         break;
                     case 9:
                         // RegistrarAcesso();
