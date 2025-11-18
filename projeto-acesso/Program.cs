@@ -89,7 +89,7 @@ namespace projeto_acesso
                         // RevogarPermissao();
                         break;
                     case 9:
-                        // RegistrarAcesso();
+                        RegistrarAcesso();
                         break;
                     case 10:
                         // ConsultarLogs();
