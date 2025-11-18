@@ -83,7 +83,7 @@ namespace projeto_acesso
                         ExcluirUsuario();
                         break;
                     case 7:
-                        // ConcederPermissao();
+                        PermitirUsuario();
                         break;
                     case 8:
                         // RevogarPermissao();
