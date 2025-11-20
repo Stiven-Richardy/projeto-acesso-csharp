@@ -11,10 +11,10 @@ namespace projeto_acesso
     {
         private DateTime dtAcesso;
         private Usuario usuario;
-        private bool tipoAceso;
+        private bool tipoAcesso;
 
         public DateTime DtAcesso { get => dtAcesso; set => dtAcesso = value; }
-        public bool TipoAceso { get => tipoAceso; set => tipoAceso = value; }
+        public bool TipoAcesso { get => tipoAcesso; set => tipoAcesso = value; }
         internal Usuario Usuario { get => usuario; set => usuario = value; }
 
         public Log() { }
@@ -23,7 +23,7 @@ namespace projeto_acesso
         {
             DtAcesso = dtAcesso;
             Usuario = usuario;
-            TipoAceso = tipoAceso;
+            TipoAcesso = tipoAceso;
         }
     }
 }

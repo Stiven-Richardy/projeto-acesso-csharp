@@ -23,6 +23,11 @@ namespace projeto_acesso
         public string Nome { get => nome; set => nome = value; }
         public Queue<Log> Logs { get => logs; set => logs = value; }
 
+        public Ambiente()
+        {
+            Logs = new Queue<Log>();
+        }
+
         public Ambiente(string nome)
         {
             Nome = nome;
@@ -37,6 +42,10 @@ namespace projeto_acesso
 
         public void RegistrarLog(Log log)
         {
+            if (Logs.Count >= 100)
+            {
+                Logs.Dequeue();
+            }
             Logs.Enqueue(log);
         }
     }
