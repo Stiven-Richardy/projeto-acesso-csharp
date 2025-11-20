@@ -36,7 +36,13 @@ namespace projeto_acesso
 
         public bool ConcederPermissao(Ambiente ambiente)
         {
-            return false;
+            bool concedeu = false;
+            if (ambiente != null) 
+            {
+                Ambientes.Add(ambiente);
+                concedeu = true;
+            }
+            return concedeu;
         }
 
         public bool RevogarPermissao(Ambiente ambiente)

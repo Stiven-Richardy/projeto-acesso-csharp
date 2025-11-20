@@ -83,7 +83,7 @@ namespace projeto_acesso
                         ExcluirUsuario();
                         break;
                     case 7:
-                        // ConcederPermissao();
+                        PermitirUsuario();
                         break;
                     case 8:
                         // RevogarPermissao();
@@ -204,6 +204,29 @@ namespace projeto_acesso
                 Console.WriteLine($" Id: {usuarioPesquisado.Id}\n" +
                     $" Nome: {usuarioPesquisado.Nome}");
                 Utils.MensagemSucesso("Usuário excluído!");
+            }
+            else
+            {
+                Utils.MensagemErro("O usuario não existe.");
+            }
+        }
+        static void PermitirUsuario()
+        {
+            Utils.Titulo("PERMITIR USUÁRIO");
+            Console.Write(" Digite o Nome do Usuário: ");
+            string nomeUsuario = Console.ReadLine();
+            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(nomeUsuario));
+            if (usuarioPesquisado != null)
+            {
+                Console.Write(" Digite o Ambiente: ");
+                string nomeAmbiente = Console.ReadLine();
+                Ambiente ambientePesquisado = cadastro.PesquisarAmbiente(new Ambiente(nomeAmbiente));
+                if (usuarioPesquisado.ConcederPermissao(ambientePesquisado))
+                {
+                    Utils.MensagemSucesso($"Acesso concedido ao espaço {ambientePesquisado.Nome}");
+                }
+                else
+                    Utils.MensagemErro("Não foi possível conceder a permissão");
             }
             else
             {
