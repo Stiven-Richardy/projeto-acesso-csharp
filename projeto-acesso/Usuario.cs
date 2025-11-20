@@ -56,9 +56,7 @@ namespace projeto_acesso
                 revogou = true;
             }
             else 
-            {
-                Console.WriteLine(ehNulo? "Ambiente não cadastrado" : "Ambiente não consta na lista do usuário");
-            }
+                Console.WriteLine(ehNulo? " Ambiente não cadastrado" : "Ambiente não consta na lista do usuário");
             return revogou;
         }
     }
