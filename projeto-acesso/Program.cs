@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -92,7 +93,7 @@ namespace projeto_acesso
                         RegistrarAcesso();
                         break;
                     case 10:
-                        // ConsultarLogs();
+                        ConsultarLogs();
                         break;
                     default:
                         Utils.MensagemErro("Digite um número de 0 - 10!");
@@ -209,6 +210,69 @@ namespace projeto_acesso
             {
                 Utils.MensagemErro("O usuario não existe.");
             }
+        }
+        static void ConsultarLogs()
+        {
+            Utils.Titulo("CONSULTAR LOGS");
+            Console.Write(" Digite o nome do Ambiente: ");
+            string nomeAmbiente = Console.ReadLine();
+            Ambiente ambientePesquisado = new Ambiente(nomeAmbiente);
+            if (ambientePesquisado != null)
+            {
+                Console.Write(" Informe o filtro (1 - Acessos bem-sucedidos, 2 - Acessos negados, 3 - Todos");
+                int seletor = Utils.lerMinMax(Console.ReadLine(), 1, 3, "Filtro inválido. Tente Novamente: ");
+                
+                switch (seletor){
+                    case 1:
+                        if (ambientePesquisado.Logs.Any(lg => lg.TipoAceso))
+                        {
+                            foreach (Log log in ambientePesquisado.Logs)
+                            {
+                                if (log.TipoAceso)
+                                {
+                                    Console.WriteLine($"Data de acesso: {log.DtAcesso} \nTipo: Acesso permitido \nUsuário: {log.Usuario.Nome}");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nenhum log de acesso bem-sucedido");
+                        }
+                        break;
+                    case 2:
+                        if (ambientePesquisado.Logs.Any(lg => lg.TipoAceso == false))
+                        {
+                            foreach (Log log in ambientePesquisado.Logs)
+                            {
+                                if (!log.TipoAceso)
+                                {
+                                    Console.WriteLine($"Data de acesso: {log.DtAcesso} \nTipo: Acesso negado \nUsuário: {log.Usuario.Nome}");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nenhum log de acesso negado");
+                        }
+                        break;
+                    case 3:
+                        if (ambientePesquisado.Logs.Count > 0)
+                        {
+                            foreach (Log log in ambientePesquisado.Logs)
+                            {
+                                Console.WriteLine($"Data de acesso: {log.DtAcesso} \nTipo: Acesso {(log.TipoAceso ? "permitido" : "negado")} \nUsuário: {log.Usuario.Nome}");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nenhum log encontrado");
+                        }
+                        break;
+                }
+
+            }
+            else
+                Utils.MensagemErro("Ambiente não cadastrado");
         }
         static void RegistrarAcesso()
         {
