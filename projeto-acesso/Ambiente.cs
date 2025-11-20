@@ -37,7 +37,7 @@ namespace projeto_acesso
 
         public void RegistrarLog(Log log)
         {
-
+            Logs.Enqueue(log);
         }
     }
 }

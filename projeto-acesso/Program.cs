@@ -89,7 +89,7 @@ namespace projeto_acesso
                         BloquearUsuario();
                         break;
                     case 9:
-                        // RegistrarAcesso();
+                        RegistrarAcesso();
                         break;
                     case 10:
                         // ConsultarLogs();
@@ -208,6 +208,38 @@ namespace projeto_acesso
             else
             {
                 Utils.MensagemErro("O usuario não existe.");
+            }
+        }
+        static void RegistrarAcesso()
+        {
+            Utils.Titulo("REGISTRAR ACESSO");
+            Console.Write(" Digite o nome do Usuario: ");
+            string nomeUsuario = Console.ReadLine();
+            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(nomeUsuario));
+            if (usuarioPesquisado != null) 
+            {
+                Console.Write(" Digite o nome do Ambiente: ");
+                string nomeAmbiente = Console.ReadLine();
+                Ambiente ambientePesquisado = cadastro.PesquisarAmbiente(new Ambiente(nomeAmbiente));
+                if (ambientePesquisado != null)
+                {
+                    Log novoLog = new Log(DateTime.Now, usuarioPesquisado, usuarioPesquisado.Ambientes.Contains(ambientePesquisado));
+                    if (ambientePesquisado.Logs.Count < 100)
+                    {
+                        ambientePesquisado.RegistrarLog(novoLog);
+                        Utils.MensagemSucesso($"Registro de acesso {(novoLog.TipoAceso ? "efetuado" : "negado")} ao ambiente {ambientePesquisado.Nome}");
+                    }
+                    else
+                        Utils.MensagemErro("Limite máximo de logs atingidos para o ambiente");
+                }
+                else
+                {
+                    Utils.MensagemErro("Ambiente não cadastrado");
+                }
+            }
+            else
+            {
+                Utils.MensagemErro("Usuario não existe");
             }
         }
         static void BloquearUsuario()
