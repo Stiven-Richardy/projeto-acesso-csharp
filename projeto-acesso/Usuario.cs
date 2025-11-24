@@ -22,6 +22,11 @@ namespace projeto_acesso
         public string Nome { get => nome; set => nome = value; }
         public List<Ambiente> Ambientes { get => ambientes; set => ambientes = value; }
 
+        public Usuario() 
+        {
+            Ambientes = new List<Ambiente>();
+        }
+
         public Usuario(string nome) 
         {
             Nome = nome;
@@ -39,8 +44,12 @@ namespace projeto_acesso
             bool concedeu = false;
             if (ambiente != null) 
             {
-                Ambientes.Add(ambiente);
-                concedeu = true;
+                bool repetido = Ambientes.Any(a => a.Id == ambiente.Id);
+                if (!repetido)
+                {
+                    Ambientes.Add(ambiente);
+                    concedeu = true;
+                }
             }
             return concedeu;
         }

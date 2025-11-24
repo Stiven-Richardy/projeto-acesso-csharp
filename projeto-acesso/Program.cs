@@ -35,11 +35,27 @@ namespace projeto_acesso
     internal class Program
     {
         public static Cadastro cadastro = new Cadastro();
-        public static int idAmbiente = 0;
-        public static int idUsuario = 0;
+        public static int idAmbiente = 1;
+        public static int idUsuario = 1;
 
         static void Main(string[] args)
         {
+            try
+            {
+                cadastro.Download();
+                Utils.MensagemSucesso("Dados carregados com sucesso.");
+
+                if (cadastro.Usuarios.Count > 0) 
+                    idUsuario = cadastro.Usuarios.Max(u => u.Id) + 1;
+
+                if (cadastro.Ambientes.Count > 0) 
+                    idAmbiente = cadastro.Ambientes.Max(a => a.Id) + 1;
+            }
+            catch (Exception ex)
+            {
+                Utils.MensagemErro("Erro ao carregar dados: " + ex.Message);
+            }
+
             int seletor = -1;
             while (seletor != 0)
             {
@@ -63,7 +79,8 @@ namespace projeto_acesso
                 switch (seletor)
                 {
                     case 0:
-                        Console.WriteLine(" Programa finalizado!");
+                        cadastro.Upload();
+                        Console.WriteLine("Dados salvos. Programa finalizado!");
                         break;
                     case 1:
                         CadastrarAmbiente();
@@ -199,7 +216,7 @@ namespace projeto_acesso
                 Utils.MensagemSucesso("Usuário excluído!");
             }
             else
-                Utils.MensagemErro("O usuário não existe.");
+                Utils.MensagemErro("O usuário não existe ou não pode ser removido.");
         }
 
         static void PermitirUsuario()
@@ -255,14 +272,10 @@ namespace projeto_acesso
                 Ambiente ambientePesquisado = cadastro.PesquisarAmbiente(new Ambiente(nomeAmbiente));
                 if (ambientePesquisado != null)
                 {
-                    Log novoLog = new Log(DateTime.Now, usuarioPesquisado, usuarioPesquisado.Ambientes.Contains(ambientePesquisado));
-                    if (ambientePesquisado.Logs.Count < 100)
-                    {
-                        ambientePesquisado.RegistrarLog(novoLog);
-                        Utils.MensagemSucesso($"Registro de acesso {(novoLog.TipoAceso ? "efetuado" : "negado")} ao ambiente {ambientePesquisado.Nome}");
-                    }
-                    else
-                        Utils.MensagemErro("Limite máximo de logs atingidos para o ambiente");
+                    bool autorizado = usuarioPesquisado.Ambientes.Any(a => a.Id == ambientePesquisado.Id);
+                    Log novoLog = new Log(DateTime.Now, usuarioPesquisado, autorizado);
+                    ambientePesquisado.RegistrarLog(novoLog);
+                    Utils.MensagemSucesso($"Registro de acesso {(novoLog.TipoAcesso ? "efetuado" : "negado")} ao ambiente {ambientePesquisado.Nome}");
                 }
                 else
                     Utils.MensagemErro("Ambiente não cadastrado");
@@ -289,10 +302,10 @@ namespace projeto_acesso
                 int seletor = Utils.lerMinMax(Console.ReadLine(), 1, 3, "Filtro inválido. Tente Novamente: "); 
                 switch (seletor){
                     case 1:
-                        if (ambientePesquisado.Logs?.Any(lg => lg.TipoAceso) == true)
+                        if (ambientePesquisado.Logs?.Any(lg => lg.TipoAcesso) == true)
                         {
                             Console.WriteLine(new string('-', 70));
-                            foreach (Log log in ambientePesquisado.Logs.Where(lg => lg.TipoAceso))
+                            foreach (Log log in ambientePesquisado.Logs.Where(lg => lg.TipoAcesso))
                             {
                                 Console.WriteLine($" Data de acesso: {log.DtAcesso}\n Tipo: Acesso permitido\n Usuário: {log.Usuario.Nome}");
                                 Console.WriteLine(new string('-', 70));
@@ -304,9 +317,9 @@ namespace projeto_acesso
                         break;
                     case 2:
                         Console.WriteLine(new string('-', 70));
-                        if (ambientePesquisado.Logs?.Any(lg => !lg.TipoAceso) == true)
+                        if (ambientePesquisado.Logs?.Any(lg => !lg.TipoAcesso) == true)
                         {
-                            foreach (Log log in ambientePesquisado.Logs.Where(lg => !lg.TipoAceso))
+                            foreach (Log log in ambientePesquisado.Logs.Where(lg => !lg.TipoAcesso))
                             {
                                 Console.WriteLine($" Data de acesso: {log.DtAcesso}\n Tipo: Acesso negado\n Usuário: {log.Usuario.Nome}");
                                 Console.WriteLine(new string('-', 70));
@@ -322,7 +335,7 @@ namespace projeto_acesso
                             Console.WriteLine(new string('-', 70));
                             foreach (Log log in ambientePesquisado.Logs)
                             {
-                                Console.WriteLine($" Data de acesso: {log.DtAcesso}\n Tipo: Acesso {(log.TipoAceso ? "permitido" : "negado")}\n Usuário: {log.Usuario.Nome}");
+                                Console.WriteLine($" Data de acesso: {log.DtAcesso}\n Tipo: Acesso {(log.TipoAcesso ? "permitido" : "negado")}\n Usuário: {log.Usuario.Nome}");
                                 Console.WriteLine(new string('-', 70));
                             }
                             Utils.MensagemSucesso("Logs de acesso encontrados");
