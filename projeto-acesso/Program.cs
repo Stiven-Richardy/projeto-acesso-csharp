@@ -46,16 +46,16 @@ namespace projeto_acesso
                 Console.Clear();
                 Utils.Titulo("PAINEL PRINCIPAL");
                 Console.WriteLine(" 0 - Sair\n" +
-                    " 1 - Cadastrar ambiente\n" +
-                    " 2 - Consultar ambiente\n" +
-                    " 3 - Excluir ambiente\n" +
-                    " 4 - Cadastrar usuario\n" +
-                    " 5 - Consultar usuario\n" +
-                    " 6 - Excluir usuario\n" +
-                    " 7 - Conceder permissão de acesso ao usuario\n" +
-                    " 8 - Revogar permissão de acesso ao usuario\n" +
-                    " 9 - Registrar acesso\n" +
-                    " 10 - Consultar logs de acesso");
+                    " 1 - Cadastrar Ambiente\n" +
+                    " 2 - Consultar Ambiente\n" +
+                    " 3 - Excluir Ambiente\n" +
+                    " 4 - Cadastrar Usuário\n" +
+                    " 5 - Consultar Usuário\n" +
+                    " 6 - Excluir Usuário\n" +
+                    " 7 - Conceder permissão de acesso ao Usuário\n" +
+                    " 8 - Revogar permissão de acesso ao Usuário\n" +
+                    " 9 - Registrar Acesso\n" +
+                    " 10 - Consultar logs de Acesso");
                 Console.WriteLine(new string('-', 70));
                 Console.Write(" Escolha uma opção: ");
                 seletor = Utils.lerInt(Console.ReadLine(), 0, " Entrada inválida!\n Digite outro número: ");
@@ -117,9 +117,7 @@ namespace projeto_acesso
                 idAmbiente++;
             }
             else
-            {
                 Utils.MensagemErro("O ambiente já existe.");
-            }
         }
 
         static void ConsultarAmbiente()
@@ -135,9 +133,7 @@ namespace projeto_acesso
                 Utils.MensagemSucesso("Ambiente encontrado!");
             }
             else
-            {
                 Utils.MensagemErro("O ambiente não existe.");
-            }
         }
 
         static void ExcluirAmbiente()
@@ -153,9 +149,7 @@ namespace projeto_acesso
                 Utils.MensagemSucesso("Ambiente excluído!");
             }
             else
-            {
                 Utils.MensagemErro("O ambiente não existe.");
-            }
         }
 
         static void CadastrarUsuario()
@@ -173,10 +167,9 @@ namespace projeto_acesso
                 idUsuario++;
             }
             else
-            {
                 Utils.MensagemErro("O usuário já existe.");
-            }
         }
+
         static void ConsultarUsuario()
         {
             Utils.Titulo("CONSULTAR USUÁRIO");
@@ -190,10 +183,9 @@ namespace projeto_acesso
                 Utils.MensagemSucesso("Usuário encontrado!");
             }
             else
-            {
                 Utils.MensagemErro("O usuário não existe.");
-            }
         }
+
         static void ExcluirUsuario()
         {
             Utils.Titulo("EXCLUIR USUÁRIO");
@@ -207,80 +199,56 @@ namespace projeto_acesso
                 Utils.MensagemSucesso("Usuário excluído!");
             }
             else
-            {
-                Utils.MensagemErro("O usuario não existe.");
-            }
+                Utils.MensagemErro("O usuário não existe.");
         }
-        static void ConsultarLogs()
-        {
-            Utils.Titulo("CONSULTAR LOGS");
-            Console.Write(" Digite o nome do Ambiente: ");
-            string nomeAmbiente = Console.ReadLine();
-            Ambiente ambientePesquisado = new Ambiente(nomeAmbiente);
-            if (ambientePesquisado != null)
-            {
-                Console.Write(" Informe o filtro (1 - Acessos bem-sucedidos, 2 - Acessos negados, 3 - Todos");
-                int seletor = Utils.lerMinMax(Console.ReadLine(), 1, 3, "Filtro inválido. Tente Novamente: ");
-                
-                switch (seletor){
-                    case 1:
-                        if (ambientePesquisado.Logs.Any(lg => lg.TipoAceso))
-                        {
-                            foreach (Log log in ambientePesquisado.Logs)
-                            {
-                                if (log.TipoAceso)
-                                {
-                                    Console.WriteLine($"Data de acesso: {log.DtAcesso} \nTipo: Acesso permitido \nUsuário: {log.Usuario.Nome}");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Nenhum log de acesso bem-sucedido");
-                        }
-                        break;
-                    case 2:
-                        if (ambientePesquisado.Logs.Any(lg => lg.TipoAceso == false))
-                        {
-                            foreach (Log log in ambientePesquisado.Logs)
-                            {
-                                if (!log.TipoAceso)
-                                {
-                                    Console.WriteLine($"Data de acesso: {log.DtAcesso} \nTipo: Acesso negado \nUsuário: {log.Usuario.Nome}");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Nenhum log de acesso negado");
-                        }
-                        break;
-                    case 3:
-                        if (ambientePesquisado.Logs.Count > 0)
-                        {
-                            foreach (Log log in ambientePesquisado.Logs)
-                            {
-                                Console.WriteLine($"Data de acesso: {log.DtAcesso} \nTipo: Acesso {(log.TipoAceso ? "permitido" : "negado")} \nUsuário: {log.Usuario.Nome}");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Nenhum log encontrado");
-                        }
-                        break;
-                }
 
+        static void PermitirUsuario()
+        {
+            Utils.Titulo("PERMITIR USUÁRIO");
+            Console.Write(" Digite o Nome do Usuário: ");
+            string nomeUsuario = Console.ReadLine();
+            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(nomeUsuario));
+            if (usuarioPesquisado != null)
+            {
+                Console.Write(" Digite o Ambiente: ");
+                string nomeAmbiente = Console.ReadLine();
+                Ambiente ambientePesquisado = cadastro.PesquisarAmbiente(new Ambiente(nomeAmbiente));
+                if (usuarioPesquisado.ConcederPermissao(ambientePesquisado))
+                    Utils.MensagemSucesso($"Acesso concedido ao espaço {ambientePesquisado.Nome}");
+                else
+                    Utils.MensagemErro("Não foi possível conceder a permissão");
             }
             else
-                Utils.MensagemErro("Ambiente não cadastrado");
+                Utils.MensagemErro("O usuário não existe.");
         }
+
+        static void BloquearUsuario()
+        {
+            Utils.Titulo("BLOQUEAR USUÁRIO");
+            Console.Write(" Digite o Nome do Usuário: ");
+            string usuario = Console.ReadLine();
+            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(usuario));
+            if (usuarioPesquisado != null)
+            {
+                Console.Write(" Digite o nome do Ambiente: ");
+                string nomeAmbiente = Console.ReadLine();
+                Ambiente ambientePesquisado = cadastro.PesquisarAmbiente(new Ambiente(nomeAmbiente));
+                if (usuarioPesquisado.RevogarPermissao(ambientePesquisado))
+                    Utils.MensagemSucesso($"Acesso removido ao ambiente {ambientePesquisado.Nome}");
+                else
+                    Utils.MensagemErro($"Não foi possível remover o acesso");
+            }
+            else
+                Utils.MensagemErro("O usuário não existe.");
+        }
+
         static void RegistrarAcesso()
         {
             Utils.Titulo("REGISTRAR ACESSO");
-            Console.Write(" Digite o nome do Usuario: ");
+            Console.Write(" Digite o nome do Usuário: ");
             string nomeUsuario = Console.ReadLine();
             Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(nomeUsuario));
-            if (usuarioPesquisado != null) 
+            if (usuarioPesquisado != null)
             {
                 Console.Write(" Digite o nome do Ambiente: ");
                 string nomeAmbiente = Console.ReadLine();
@@ -297,60 +265,76 @@ namespace projeto_acesso
                         Utils.MensagemErro("Limite máximo de logs atingidos para o ambiente");
                 }
                 else
-                {
                     Utils.MensagemErro("Ambiente não cadastrado");
-                }
             }
             else
-            {
-                Utils.MensagemErro("Usuario não existe");
-            }
+                Utils.MensagemErro("Usuário não existe");
         }
-        static void BloquearUsuario()
+
+        static void ConsultarLogs()
         {
-            Utils.Titulo("BLOQUEAR USUÁRIO");
-            Console.Write(" Digite o Nome do Usuário: ");
-            string usuario = Console.ReadLine();
-            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(usuario));
-            if (usuarioPesquisado != null)
+            Utils.Titulo("CONSULTAR LOGS");
+            Console.Write(" Digite o nome do Ambiente: ");
+            string nomeAmbiente = Console.ReadLine();
+            Ambiente ambientePesquisado = cadastro.PesquisarAmbiente(new Ambiente(nomeAmbiente));
+            if (ambientePesquisado != null)
             {
-                Console.Write(" Digite o nome do ambiente: ");
-                string nomeAmbiente = Console.ReadLine();
-                Ambiente ambientePesquisado = new Ambiente(nomeAmbiente);
-                if (usuarioPesquisado.RevogarPermissao(ambientePesquisado))
-                {
-                    Utils.MensagemSucesso($"Acesso removido ao ambiente {ambientePesquisado.Nome}");
+                Console.WriteLine(new string('-', 70));
+                Console.WriteLine(" Filtros disponíveis:\n" +
+                    " 1 - Acessos bem-sucedidos\n" +
+                    " 2 - Acessos negados\n" +
+                    " 3 - Todos");
+                Console.WriteLine(new string('-', 70));
+                Console.Write(" Informe o filtro: ");
+                int seletor = Utils.lerMinMax(Console.ReadLine(), 1, 3, "Filtro inválido. Tente Novamente: "); 
+                switch (seletor){
+                    case 1:
+                        if (ambientePesquisado.Logs?.Any(lg => lg.TipoAceso) == true)
+                        {
+                            Console.WriteLine(new string('-', 70));
+                            foreach (Log log in ambientePesquisado.Logs.Where(lg => lg.TipoAceso))
+                            {
+                                Console.WriteLine($" Data de acesso: {log.DtAcesso}\n Tipo: Acesso permitido\n Usuário: {log.Usuario.Nome}");
+                                Console.WriteLine(new string('-', 70));
+                            }
+                            Utils.MensagemSucesso("Logs de acesso bem-sucedido encontrados");
+                        }
+                        else
+                            Utils.MensagemErro("Nenhum log de acesso bem-sucedido");
+                        break;
+                    case 2:
+                        Console.WriteLine(new string('-', 70));
+                        if (ambientePesquisado.Logs?.Any(lg => !lg.TipoAceso) == true)
+                        {
+                            foreach (Log log in ambientePesquisado.Logs.Where(lg => !lg.TipoAceso))
+                            {
+                                Console.WriteLine($" Data de acesso: {log.DtAcesso}\n Tipo: Acesso negado\n Usuário: {log.Usuario.Nome}");
+                                Console.WriteLine(new string('-', 70));
+                            }
+                            Utils.MensagemSucesso("Logs de acesso negado encontrados");
+                        }
+                        else
+                            Utils.MensagemErro("Nenhum log de acesso negado");
+                        break;
+                    case 3:
+                        if (ambientePesquisado.Logs?.Count > 0)
+                        {
+                            Console.WriteLine(new string('-', 70));
+                            foreach (Log log in ambientePesquisado.Logs)
+                            {
+                                Console.WriteLine($" Data de acesso: {log.DtAcesso}\n Tipo: Acesso {(log.TipoAceso ? "permitido" : "negado")}\n Usuário: {log.Usuario.Nome}");
+                                Console.WriteLine(new string('-', 70));
+                            }
+                            Utils.MensagemSucesso("Logs de acesso encontrados");
+                        }
+                        else
+                            Utils.MensagemErro("Nenhum log encontrado");
+                        break;
                 }
-                else
-                    Utils.MensagemErro($"Não foi possível remover o acesso");
+
             }
             else
-            {
-                Utils.MensagemErro("O usuario não existe.");
-            }
-        }
-        static void PermitirUsuario()
-        {
-            Utils.Titulo("PERMITIR USUÁRIO");
-            Console.Write(" Digite o Nome do Usuário: ");
-            string nomeUsuario = Console.ReadLine();
-            Usuario usuarioPesquisado = cadastro.PesquisarUsuario(new Usuario(nomeUsuario));
-            if (usuarioPesquisado != null)
-            {
-                Console.Write(" Digite o Ambiente: ");
-                string nomeAmbiente = Console.ReadLine();
-                Ambiente ambientePesquisado = cadastro.PesquisarAmbiente(new Ambiente(nomeAmbiente));
-                if (usuarioPesquisado.ConcederPermissao(ambientePesquisado))
-                {
-                    Utils.MensagemSucesso($"Acesso concedido ao espaço {ambientePesquisado.Nome}");
-                }
-                else
-                    Utils.MensagemErro("Não foi possível conceder a permissão");
-            }
-            else
-            {
-                Utils.MensagemErro("O usuario não existe.");
-            }
+                Utils.MensagemErro("Ambiente não cadastrado");
         }
     }
 }
